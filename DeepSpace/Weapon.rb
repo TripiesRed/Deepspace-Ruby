@@ -1,3 +1,5 @@
+require_relative 'WeaponToUI'
+
 module Deepsace
 	class Weapon
 		 attr_reader :type, :uses
@@ -37,6 +39,12 @@ module Deepsace
 		     
 		     end
 		 end
+		 
+		 def getUIversion
+		
+			return WeaponToUI.new(self)
+		
+		end
 		 
 	end
 end  

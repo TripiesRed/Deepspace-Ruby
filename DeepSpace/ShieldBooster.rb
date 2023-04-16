@@ -1,3 +1,5 @@
+require_relative 'ShieldToUI'
+
 module Deepspace
 	class ShieldBooster
 
@@ -28,6 +30,12 @@ module Deepspace
 			else 
 				@@UNIT
 			end
+		end
+		
+		def getUIversion
+		
+			return ShieldToUI.new(self)
+		
 		end
 
 	end
