@@ -31,64 +31,6 @@ class SpaceStation
 
 	end
 
-	def cleanUpMountedItems
-
-
-
-	end
-
-	def discardHangar
-
-		@hangar = nil
-
-	end
-
-	def discarShieldBooster
-
-	end
-
-	def discarShieldBoosterInHangar
-
-		if(@hangar.nil? == false)
-			@hangar.removeShieldBooster
-		end
-
-	end
-
-	def discardWeapon
-
-	end
-
-	def discardWeaponInHangar
-
-		if(@hangar.nil? == false)
-			@hangar.removeWeapon
-		end
-
-	end
-
-	def fire
-
-	end
-
-	def mountShieldBooster(i)
-
-	end
-
-	def mountWeapon(i)
-
-		@weapons
-
-	end
-
-	def move
-
-	end
-
-	def protection
-
-	end
-
 	def receiveHangar(h)
 
 		if(@hangar.nil == true)
@@ -129,6 +71,96 @@ class SpaceStation
 		end
 
 	end
+
+	def discardHangar
+
+		@hangar = nil
+
+	end
+
+	def discardShieldBooster
+
+	end
+
+	def discardShieldBoosterInHangar
+
+		if(@hangar.nil? == false)
+			@hangar.removeShieldBooster
+		end
+
+	end
+
+	def discardWeapon
+
+	end
+
+	def discardWeaponInHangar
+
+		if(@hangar.nil? == false)
+			@hangar.removeWeapon
+		end
+
+	end
+
+	def mountShieldBooster(i)
+
+		@shieldBoosters.push(@hangar.removeShieldBooster(i))
+
+	end
+
+	def mountWeapon(i)
+
+		@weapons.push(@hangar.removeWeapon(i))
+
+	end
+
+	def cleanUpMountedItems
+
+		i = 0
+		while i < @weapons.size
+		
+			if(@weapons.at(i).uses == 0)
+				@weapons.[i] = nil
+			end
+
+			i += 1
+		end
+
+		i = 0
+		while i < @shieldBoosters.size
+		
+			if(@shieldBoosters.at(i).uses == 0)
+				@shieldBoosters.[i] = nil
+			end
+
+			i += 1
+		end
+
+	end
+
+	def getSpeed
+
+		speed = @fuelUnits/@@MAXFUEL
+
+		return speed
+
+	end
+
+	def move
+
+		if(@fuelUnits > 0)
+			@fuelUnits -= getSpeed
+		end
+
+	end
+
+	def fire
+
+	end
+
+	def protection
+
+	end
 	
 	def setLoot(loot)
 
@@ -141,6 +173,14 @@ class SpaceStation
 	end
 
 	def validState
+		valid = false
+
+		if(@pendingDamage.hasNoEffect || @pendingDamage == nil)
+			valid = true	
+		
+		end
+
+		return valid
 
 	end
 	
