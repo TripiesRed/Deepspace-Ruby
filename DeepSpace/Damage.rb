@@ -11,10 +11,8 @@ module Deepspace
 		@weapons = []
 	  end
 	  
-	  def initialize_copy(orig)
-		@n_shields = orig.n_shields
-		@n_weapons = orig.n_weapons
-		@weapons = orig.weapons.clone
+	  def self.copy(orig)
+		new(orig.n_shields, orig.n_weapons, orig.weapons.clone)
 	  end
 	  
 	  # Métodos Visibilidad de Paquete

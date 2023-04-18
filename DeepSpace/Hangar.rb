@@ -10,10 +10,8 @@ module Deepspace
 		@shield_boosters = []
 	  end
 	  
-	  def initialize_copy(other)
-		@max_elements = other.max_elements
-		@weapons = other.weapons.clone
-		@shield_boosters = other.shield_boosters.clone
+	  def self.copy(other)
+		new(other.max_elements, other.weapons.clone, other.shield_boosters.clone)
 	  end
 	  
 	  # Métodos con Visibilidad de Paquete
