@@ -33,7 +33,7 @@ class SpaceStation
 
 	def receiveHangar(h)
 
-		if(@hangar.nil == true)
+		if(@hangar.nil? == true)
 			@hangar = h
 		end
 
@@ -120,7 +120,7 @@ class SpaceStation
 		while i < @weapons.size
 		
 			if(@weapons.at(i).uses == 0)
-				@weapons.[i] = nil
+				@weapons[i] = nil
 			end
 
 			i += 1
@@ -130,7 +130,7 @@ class SpaceStation
 		while i < @shieldBoosters.size
 		
 			if(@shieldBoosters.at(i).uses == 0)
-				@shieldBoosters.[i] = nil
+				@shieldBoosters[i] = nil
 			end
 
 			i += 1
@@ -190,6 +190,32 @@ class SpaceStation
 	
 	end
 
+	def to_s
+
+		line = "Name: " + @name +  "\nMedals: " + @nMedals.to_s + "\nFuelUnits: " + @fuelUnits.to_s
+		line = line + "\nAmmoPower: " + @ammoPower.to_s + "\nShieldPower: " + @shieldPower.to_s + "\n-Hangar\n" + @hangar.to_s
+
+		i = 0
+		line2 = "\n-ShieldBoosters"
+		while  i < @shieldBoosters.size do
+			line2 += "\n-Shield " + i.to_s + "-\n" + @shieldBoosters[i].to_s
+			i += 1
+		end
+
+		line2 += "\n-Weapons"
+
+		i = 0
+		while  i < @weapons.size do
+			line2 += "\n-Weapon " + i.to_s + "-\n" + @weapons[i].to_s
+			i += 1
+		end
+
+		line += line2
+
+		line
+
+	end	
+
 	#Métodos Privados
 	private
 
@@ -210,8 +236,35 @@ class SpaceStation
 	end
 
 end
-
 end
+
+sup = Deepspace::SuppliesPackage.new(2,5,8)
+player = Deepspace::SpaceStation.new("CHAD", sup)
+weapons = Array.new
+typ = Deepspace::WeaponType::MISSILE
+w1 = Deepspace::Weapon.new("tini", typ, 10)
+weapons.push(w1)
+w2 = Deepspace::Weapon.new("toni", typ, 17)
+
+hang = Deepspace::Hangar.new(12)
+shield = Deepspace::ShieldBooster.new("SH", 5, 6)
+shield2 = Deepspace::ShieldBooster.newCopy(shield)
+
+
+player.receiveWeapon(w1)
+player.receiveWeapon(w2)
+player.receiveHangar(hang)
+player.receiveWeapon(w2)
+player.receiveWeapon(w1)
+player.receiveShieldBooster(shield)
+player.receiveShieldBooster(shield)
+player.receiveShieldBooster(shield2)
+
+player.mountWeapon(1)
+player.mountShieldBooster(2)
+
+puts player.to_s
+
 
 
 

@@ -5,6 +5,8 @@ module Deepspace
 
 		@@UNIT=1
 
+		attr_reader :name, :boost, :uses
+
 		def initialize (name, boost, uses)
 			
 			@name = name
@@ -19,8 +21,6 @@ module Deepspace
 
 		end
 
-		attr_reader :name, :boost, :uses
-
 		def useIt 
 		
 			if @uses > 0
@@ -30,6 +30,12 @@ module Deepspace
 			else 
 				@@UNIT
 			end
+		end
+
+		def to_s
+
+			"Name: " + @name + "\nBoost: " + @boost.to_s + "\nUses: " + @uses.to_s
+
 		end
 		
 		def getUIversion
