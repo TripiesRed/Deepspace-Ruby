@@ -11,12 +11,14 @@ module Deepspace
 		@weapons = []
 	  end
 	  
-	  def self.copy(orig)
+	  def self.newCopy(orig)
 		new(orig.n_shields, orig.n_weapons, orig.weapons.clone)
 	  end
+
+	  def self.newSpecificWeapons()
 	  
 	  # Métodos Visibilidad de Paquete
-	  def get_UIversion
+	  def getUIversion
 		DamageToUI.new(self)
 	  end
 	  
@@ -50,8 +52,8 @@ module Deepspace
 		return Damage.new(new_n_shields, new_n_weapons)
 	  end
 	  
-	  def discard_weapon(w)
-		weapon_type = w.get_type
+	  def discardWeapon(w)
+		weapon_type = w.type
 		weapon_index = arrayContainsType(@weapons, weapon_type)
 		
 		if !@weapons.empty? && weapon_index != -1
@@ -61,17 +63,17 @@ module Deepspace
 		end
 	  end
 	  
-	  def discard_shield_booster
+	  def discardShieldBooster
 		if @n_shields > 0
 		  @n_shields -= 1
 		end
 	  end
 	  
-	  def has_no_effect
+	  def hasNoEffect
 		@n_shields == 0 && @n_weapons == 0
 	  end
 	  
-	  def set_weapons(w)
+	  def setNWeapons(w)
 		@weapons = w.clone
 	  end
 	  

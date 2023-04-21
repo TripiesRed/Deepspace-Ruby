@@ -23,7 +23,7 @@ class SpaceStation
 		@ammoPower = supplies.ammoPower
 		@fuelUnits = supplies.fuelUnits
 		@shieldPower = supplies.shieldPower
-		@nMedals = nil
+		@nMedals = 0
 		@pendingDamage = nil
 		@hangar = nil
 		@shieldBoosters = Array.new
@@ -237,33 +237,6 @@ class SpaceStation
 
 end
 end
-
-sup = Deepspace::SuppliesPackage.new(2,5,8)
-player = Deepspace::SpaceStation.new("CHAD", sup)
-weapons = Array.new
-typ = Deepspace::WeaponType::MISSILE
-w1 = Deepspace::Weapon.new("tini", typ, 10)
-weapons.push(w1)
-w2 = Deepspace::Weapon.new("toni", typ, 17)
-
-hang = Deepspace::Hangar.new(12)
-shield = Deepspace::ShieldBooster.new("SH", 5, 6)
-shield2 = Deepspace::ShieldBooster.newCopy(shield)
-
-
-player.receiveWeapon(w1)
-player.receiveWeapon(w2)
-player.receiveHangar(hang)
-player.receiveWeapon(w2)
-player.receiveWeapon(w1)
-player.receiveShieldBooster(shield)
-player.receiveShieldBooster(shield)
-player.receiveShieldBooster(shield2)
-
-player.mountWeapon(1)
-player.mountShieldBooster(2)
-
-puts player.to_s
 
 
 
