@@ -50,7 +50,21 @@ class SpaceStation
 	end
 
 	def receiveShot(shot)
+		myProtection = protection()
 
+  		if myProtection >= shot
+    		@shieldPower -= SHIELDLOSSPERUNITSHOT * shot
+
+    		if @shieldPower < 0.0
+      			@shieldPower = 0.0
+    		end
+
+    		return ShotResult::RESIST
+  		else
+    		@shieldPower = 0.0
+
+    	return ShotResult::DONOTRESIST
+  end
 	end
 
 	def receiveSupplies(s)
@@ -80,6 +94,16 @@ class SpaceStation
 
 	def discardShieldBooster
 
+		size = shieldBoosters.size
+
+		if i >= 0 && i < size
+			shieldBoosters.remove(i)
+
+			if pendingDamage != nil
+				pendingDamage.discardShieldBooster()
+				cleanPendingDamage()
+			end
+		end
 	end
 
 	def discardShieldBoosterInHangar
@@ -90,7 +114,18 @@ class SpaceStation
 
 	end
 
-	def discardWeapon
+	def discardWeapon(i)
+
+		size = weapons.size
+
+		if i >= 0 && i < size
+			w = weapons.delete_at(i)
+
+			if pendingDamage != nil
+				pendingDamage.discardWeapon(w)
+				cleanPendingDamage()
+			end
+		end			
 
 	end
 
@@ -156,14 +191,65 @@ class SpaceStation
 
 	def fire
 
+		size = weapons.size
+		factor = 1
+
+		
+		(0...size).each do |i|
+  			w = weapons[i]
+  			factor *= w.useIt
+		end
+
+		return ammoPower * factor
 	end
 
 	def protection
+		size = shieldBoosters.size
+		factor = 1.0
+
+		(0...size).each do |i|
+ 			s = shieldBoosters[i]
+  			factor *= s.useIt
+		end
+
+		return shieldPower * factor
 
 	end
 	
 	def setLoot(loot)
 
+		dealer = CardDealer.getInstance
+
+  		h = loot.getNHangars
+
+  		if h > 0
+    		hangar = dealer.nextHangar
+    		self.receiveHangar(hangar)
+  		end
+
+  		elements = loot.getNSupplies
+
+  
+  		elements.times do |i|
+    		sup = dealer.nextSuppliesPackage
+    		self.receiveSupplies(sup)
+  		end
+
+  		elements = loot.getNWeapons
+
+  		elements.times do |i|
+    		weap = dealer.nextWeapon
+    		self.receiveWeapon(weap)
+  		end
+
+  		elements = loot.getNShields
+
+  		elements.times do |i|
+    		sh = dealer.nextShieldBooster
+    		self.receiveShieldBooster(sh)
+  		end
+
+  		@nMedals += loot.getNMedals
 	end
 
 	def setPendingDamage(d)
