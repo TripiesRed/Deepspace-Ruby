@@ -15,7 +15,7 @@ class GameUniverse
 
 	@@WIN = 10
 
-	attr_reader :gameState
+	attr_reader :gtate, :currentStation, :currentEnemy
 
 	def initialize ()
 		
@@ -113,7 +113,7 @@ class GameUniverse
 
 				supplies = dealer.nextSuppliesPackage
 				station = SpaceStation.new(names[i], supplies)
-				@spaceStations.add(station)
+				@spaceStations.push(station)
 
 				nh = @dice.initWithNHangars
 				nw = @dice.initWithNWeapons
@@ -121,11 +121,12 @@ class GameUniverse
 				lo = Loot.new(0,nw,ns,nh,0)
 
 				station.setLoot(lo)
+				i += 1
 
 			end
 
-			@currentStationIndex = whoStarts(names.size)
-			@currentStation = @spaceStations[i]
+			@currentStationIndex = @dice.whoStarts(names.size)
+			@currentStation = @spaceStations[@currentStationIndex]
 
 			@currentEnemy = dealer.nextEnemy
 
@@ -164,6 +165,10 @@ class GameUniverse
 		
 		end
 
+	end
+
+	def state
+		return @gameState.state
 	end
 
 	def combat 
@@ -233,7 +238,7 @@ class GameUniverse
 
 	def getUIversion
 		
-		return GameUniverseToUI.new(self)
+		return GameUniverseToUI.new(@currentStation, @currentEnemy)
 	
 	end
 

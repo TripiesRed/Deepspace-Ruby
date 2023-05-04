@@ -1,6 +1,11 @@
+require_relative 'EnemyToUI'
+require_relative 'Loot'
+require_relative 'Damage'
+require_relative 'ShotResult'
+
 module Deepspace
 	class EnemyStarShip
-	  attr_reader :name, :loot, :damage
+	  attr_reader :name, :loot, :damage, :ammoPower, :shieldPower
   
 	  def initialize(n, a, s, l, d)
 		@name = n
@@ -10,7 +15,7 @@ module Deepspace
 		@damage = d
 	  end
   
-	  def self.copy(e)
+	  def self.newCopy(e)
 		new(e.name, e.ammoPower, e.shieldPower, e.loot, e.damage)
 	  end
   

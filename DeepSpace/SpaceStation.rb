@@ -5,20 +5,21 @@ require_relative 'SuppliesPackage'
 require_relative 'Weapon'
 require_relative 'ShieldBooster'
 require_relative 'Hangar'
+require_relative 'CardDealer'
+require_relative 'ShotResult'
 
 module Deepspace
 
 class SpaceStation
 	
-	attr_reader :name, :nMedals, :ammoPower, :fuelUnits, \
+	attr_accessor :name, :nMedals, :ammoPower, :fuelUnits, \
       :shieldPower, :shieldBoosters, :hangar, :weapons, \
       :pendingDamage
 
 	@@MAXFUEL = 100
 	@@SHIELDLOSSPERUNITSHOT = 0.1
 
-	def initialize (n, supplies ) #Constructor
-
+	def initialize (n, supplies) #Constructor
 		@name = n
 		@ammoPower = supplies.ammoPower
 		@fuelUnits = supplies.fuelUnits
@@ -30,10 +31,29 @@ class SpaceStation
 		@weapons = Array.new
 
 	end
+	
+	def self.newCopy(other)
+		sup = SuppliesPackage.new(other.ammoPower, other.fuelUnits,other.shieldPower)
+		aux = new(other.name, sup)
+		aux.nMedals = other.nMedals
+
+		aux.shieldBoosters = Array.new(other.shieldBoosters)
+		aux.weapons = Array.new(other.weapons)
+
+		if other.pendingDamage != nil
+			aux.pendingDamage = other.pendingDamage
+		end
+
+		if other.hangar != nil
+			aux.hangar = other.hangar
+		end
+		
+		aux
+	end
 
 	def receiveHangar(h)
 
-		if(@hangar.nil? == true)
+		if(@hangar == nil)
 			@hangar = h
 		end
 
@@ -41,7 +61,7 @@ class SpaceStation
 
 	def receiveShieldBooster(s)
 
-		if(@hangar.nil? == false)
+		if(@hangar != nil)
 			return @hangar.addShieldBooster(s)
 		
 		else return false
@@ -77,8 +97,8 @@ class SpaceStation
 
 	def receiveWeapon(w)
 
-		if(@hangar.nil? == false)
-			return @hangar.addWeapon(w)
+		if(@hangar != nil)
+			@hangar.addWeapon(w)
 		
 		else return false
 		
@@ -87,9 +107,7 @@ class SpaceStation
 	end
 
 	def discardHangar
-
 		@hangar = nil
-
 	end
 
 	def discardShieldBooster
@@ -106,10 +124,10 @@ class SpaceStation
 		end
 	end
 
-	def discardShieldBoosterInHangar
+	def discardShieldBoosterInHangar(i)
 
-		if(@hangar.nil? == false)
-			@hangar.removeShieldBooster
+		if(@hangar != nil)
+			@hangar.removeShieldBooster(i)
 		end
 
 	end
@@ -129,24 +147,24 @@ class SpaceStation
 
 	end
 
-	def discardWeaponInHangar
+	def discardWeaponInHangar(i)
 
-		if(@hangar.nil? == false)
-			@hangar.removeWeapon
+		if(@hangar != nil)
+			@hangar.removeWeapon(i)
 		end
 
 	end
 
-	def mountShieldBooster(i)
-
-		@shieldBoosters.push(@hangar.removeShieldBooster(i))
-
+	def mountWeapon(i)
+		if(@hangar != nil)
+			@weapons.push(@hangar.removeWeapon(i))
+		end
 	end
 
-	def mountWeapon(i)
-
-		@weapons.push(@hangar.removeWeapon(i))
-
+	def mountShieldBooster(i)
+		if(@hangar != nil)
+			@shieldBoosters.push(@hangar.removeShieldBooster(i))
+		end
 	end
 
 	def cleanUpMountedItems
@@ -207,9 +225,10 @@ class SpaceStation
 		size = shieldBoosters.size
 		factor = 1.0
 
-		(0...size).each do |i|
- 			s = shieldBoosters[i]
-  			factor *= s.useIt
+		i = 0
+		while i < size
+			factor *= shieldBoosters.at(i).useIt
+			i+=1
 		end
 
 		return shieldPower * factor
@@ -218,38 +237,42 @@ class SpaceStation
 	
 	def setLoot(loot)
 
-		dealer = CardDealer.getInstance
+		dealer = CardDealer.instance
 
-  		h = loot.getNHangars
+  		h = loot.nHangars
 
   		if h > 0
-    		hangar = dealer.nextHangar
-    		self.receiveHangar(hangar)
+    		hang = dealer.nextHangar
+    		self.receiveHangar(hang)
   		end
 
-  		elements = loot.getNSupplies
-
+  		elements = loot.nSupplies
+		i = 0
   
-  		elements.times do |i|
+  		while i < elements 
     		sup = dealer.nextSuppliesPackage
     		self.receiveSupplies(sup)
+			i += 1
   		end
 
-  		elements = loot.getNWeapons
+  		elements = loot.nWeapons
+		i = 0
 
-  		elements.times do |i|
+  		while i < elements
     		weap = dealer.nextWeapon
     		self.receiveWeapon(weap)
+			i += 1
   		end
 
-  		elements = loot.getNShields
-
-  		elements.times do |i|
+  		elements = loot.nShields
+		i = 0
+		while i < elements
     		sh = dealer.nextShieldBooster
     		self.receiveShieldBooster(sh)
+			i += 1
   		end
 
-  		@nMedals += loot.getNMedals
+  		@nMedals += loot.nMedals
 	end
 
 	def setPendingDamage(d)
@@ -271,9 +294,7 @@ class SpaceStation
 	end
 	
 	def getUIversion
-	
 		return SpaceStationToUI.new(self)
-	
 	end
 
 	def to_s
@@ -323,7 +344,5 @@ class SpaceStation
 
 end
 end
-
-
 
 

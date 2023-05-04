@@ -1,34 +1,38 @@
+require_relative 'WeaponType'
+require_relative 'DamageToUI'
+
 module Deepspace
 
 	class Damage
 	  
-	  attr_reader :n_shields, :n_weapons, :weapons
+	  attr_reader :nShields, :nWeapons, :weapons
+	  attr_writer :weapons
 	  
 	  # Constructor
-	  def initialize(shields, weapons)
-		@n_shields = shields
-		@n_weapons = weapons
+	  def initialize(weapons, shields)
+		@nShields = shields
+		@nWeapons = weapons
 		@weapons = []
 	  end
 	  
 	  def self.newCopy(orig)
-		new(orig.n_shields, orig.n_weapons, orig.weapons.clone)
+		aux = new(orig.nWeapons, orig.nShields)
+		aux.weapons = Array.new(orig.weapons)
+		aux
 	  end
 
-	  def self.newSpecificWeapons()
-	  
-	  # Métodos Visibilidad de Paquete
-	  def getUIversion
-		DamageToUI.new(self)
+	  def self.newSpecificWeapons(wl, s)
+		aux = new(wl.length, s)
+		aux.weapons = wl
+		aux
+	  end
+
+	  def self.newNumericWeapons(n, s)
+		new(n, s)
 	  end
 	  
-	  # Métodos Privados
-	  def arrayContainsType(w, t)
-		index = -1
-		if w.include?(t)
-		  index = w.index(t)
-		end
-		return index
+	  def getUIversion
+		DamageToUI.new(self)
 	  end
 	  
 	  # Métodods Públicos
@@ -36,17 +40,17 @@ module Deepspace
 		new_n_weapons, new_n_shields = 0, 0
 		
 		# Ajustamos nWeapons
-		if @n_weapons > w.length
+		if @nWeapons > w.length
 		  new_n_weapons = w.length
 		else
-		  new_n_weapons = @n_weapons
+		  new_n_weapons = @nWeapons
 		end
 		 
 		# Ajustamos nShields
-		if @n_shields > s.length
+		if @nShields > s.length
 		  new_n_shields = s.length
 		else
-		  new_n_shields = @n_shields
+		  new_n_shields = @nShields
 		end
 		
 		return Damage.new(new_n_shields, new_n_weapons)
@@ -58,19 +62,19 @@ module Deepspace
 		
 		if !@weapons.empty? && weapon_index != -1
 		  @weapons.delete_at(weapon_index)
-		elsif @n_weapons > 0
-		  @n_weapons -= 1
+		elsif @nWeapons > 0
+		  @nWeapons -= 1
 		end
 	  end
 	  
 	  def discardShieldBooster
-		if @n_shields > 0
-		  @n_shields -= 1
+		if @nShields > 0
+		  @nShields -= 1
 		end
 	  end
 	  
 	  def hasNoEffect
-		@n_shields == 0 && @n_weapons == 0
+		@nShields == 0 && @nWeapons == 0
 	  end
 	  
 	  def setNWeapons(w)
@@ -78,9 +82,20 @@ module Deepspace
 	  end
 	  
 	  def to_s
-		"Shields: #{@n_shields}, Weapons: #{@n_weapons}, Weapon Types: #{@weapons.to_s}"
+		"Shields: #{@nShields}, Weapons: #{@nWeapons}, Weapon Types: #{@weapons.to_s}"
 	  end
-  
+
+	  # Métodos Privados
+	  private
+
+	  def arrayContainsType(w, t)
+		index = -1
+		if w.include?(t)
+		  index = w.index(t)
+		end
+		return index
+	  end
+
 	end # class Damage
   
   end # module Deepspace  

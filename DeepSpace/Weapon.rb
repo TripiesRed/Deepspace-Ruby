@@ -4,7 +4,7 @@ require_relative 'WeaponType'
 module Deepspace
 	class Weapon
 
-		attr_reader :type, :uses
+		attr_reader :type, :uses, :name
 
 		@@DEFAULT_RETURN_VALUE=1
 	
