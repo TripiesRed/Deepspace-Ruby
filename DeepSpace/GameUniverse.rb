@@ -42,7 +42,6 @@ class GameUniverse
 	def mountWeapon(i)
 		if(@gameState.state == GameState::INIT || 
 			@gameState.state == GameState::AFTERCOMBAT)
-			puts "HOLA"
 			@currentStation.mountWeapon(i)
 		end 
 
@@ -98,7 +97,6 @@ class GameUniverse
 
 		if(@currentStation.nMedals == @@WIN)
 			thereisAWinner = true
-		
 		end
 
 		return thereisAWinner
@@ -124,7 +122,6 @@ class GameUniverse
 
 				station.setLoot(lo)
 
-				puts station.to_s
 				i += 1
 
 			end
@@ -146,7 +143,7 @@ class GameUniverse
 
 			if(@currentStation.validState)
 
-				@currentStationIndex = (@currentStationIndex+1) % @spaceStations.size
+				@currentStationIndex = (@currentStationIndex+1) % @spaceStations.length
 				@turns += 1
 
 				@currentStation = @spaceStations[@currentStationIndex]
@@ -156,7 +153,7 @@ class GameUniverse
 
 				@currentEnemy = dealer.nextEnemy
 
-				@gameState.next(@turns, @spaceStations.size)
+				@gameState.next(@turns, @spaceStations.length)
 
 				return true
 

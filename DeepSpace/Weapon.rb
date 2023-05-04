@@ -23,21 +23,17 @@ module Deepspace
 		end
 
 		def power()
-
 			@type.power
-
 		end
 
 		def useIt()
 
 			if @uses > 0 
-
-			@uses = @uses -1
-			self.power()
+				@uses = @uses -1
+				self.power()
 			
 			else
-
-			DEFAULT_RETURN_VALUE
+				@@DEFAULT_RETURN_VALUE
 			
 			end
 		end

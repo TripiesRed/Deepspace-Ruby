@@ -53,7 +53,7 @@ module Deepspace
 		  new_n_shields = @nShields
 		end
 		
-		return Damage.new(new_n_shields, new_n_weapons)
+		return Damage.new(new_n_weapons, new_n_shields)
 	  end
 	  
 	  def discardWeapon(w)

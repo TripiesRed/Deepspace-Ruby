@@ -109,12 +109,12 @@ class SpaceStation
 		@hangar = nil
 	end
 
-	def discardShieldBooster
+	def discardShieldBooster(i)
 
 		size = shieldBoosters.size
 
 		if i >= 0 && i < size
-			@shieldBoosters.remove(i)
+			@shieldBoosters.delete_at(i)
 
 			if @pendingDamage != nil
 				@pendingDamage.discardShieldBooster()
@@ -178,7 +178,7 @@ class SpaceStation
 		while i < @weapons.size
 		
 			if(@weapons.at(i).uses == 0)
-				@weapons[i] = nil
+				@weapons.delete_at(i)
 			end
 
 			i += 1
@@ -188,7 +188,7 @@ class SpaceStation
 		while i < @shieldBoosters.size
 		
 			if(@shieldBoosters.at(i).uses == 0)
-				@shieldBoosters[i] = nil
+				@shieldBoosters.delete_at(i)
 			end
 
 			i += 1
@@ -348,5 +348,3 @@ class SpaceStation
 
 end
 end
-
-
