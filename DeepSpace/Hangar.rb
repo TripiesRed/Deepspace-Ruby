@@ -29,13 +29,13 @@ module Deepspace
 		
 		# Métodos Públicos
 		def addWeapon(w)
-		if spaceAvailable
-			@weapons.push(w)
-			@maxElements -= 1
-			true
-		else
-			false
-		end
+			if spaceAvailable
+				@weapons.push(w)
+				@maxElements -= 1
+				true
+			else
+				false
+			end
 		end
 		
 		def addShieldBooster(s)

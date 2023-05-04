@@ -29,7 +29,6 @@ class SpaceStation
 		@hangar = nil
 		@shieldBoosters = Array.new
 		@weapons = Array.new
-
 	end
 	
 	def self.newCopy(other)
@@ -41,11 +40,11 @@ class SpaceStation
 		aux.weapons = Array.new(other.weapons)
 
 		if other.pendingDamage != nil
-			aux.pendingDamage = other.pendingDamage
+			aux.pendingDamage = Damage.newCopy(other.pendingDamage)
 		end
 
 		if other.hangar != nil
-			aux.hangar = other.hangar
+			aux.hangar = Hangar.newCopy(other.hangar)
 		end
 		
 		aux
@@ -54,7 +53,7 @@ class SpaceStation
 	def receiveHangar(h)
 
 		if(@hangar == nil)
-			@hangar = h
+			@hangar = Hangar.newCopy(h)
 		end
 
 	end
@@ -73,7 +72,7 @@ class SpaceStation
 		myProtection = protection()
 
   		if myProtection >= shot
-    		@shieldPower -= SHIELDLOSSPERUNITSHOT * shot
+    		@shieldPower -= @@SHIELDLOSSPERUNITSHOT * shot
 
     		if @shieldPower < 0.0
       			@shieldPower = 0.0
@@ -115,10 +114,10 @@ class SpaceStation
 		size = shieldBoosters.size
 
 		if i >= 0 && i < size
-			shieldBoosters.remove(i)
+			@shieldBoosters.remove(i)
 
-			if pendingDamage != nil
-				pendingDamage.discardShieldBooster()
+			if @pendingDamage != nil
+				@pendingDamage.discardShieldBooster()
 				cleanPendingDamage()
 			end
 		end
@@ -134,13 +133,13 @@ class SpaceStation
 
 	def discardWeapon(i)
 
-		size = weapons.size
+		size = @weapons.size
 
 		if i >= 0 && i < size
-			w = weapons.delete_at(i)
+			w = @weapons.delete_at(i)
 
-			if pendingDamage != nil
-				pendingDamage.discardWeapon(w)
+			if @pendingDamage != nil
+				@pendingDamage.discardWeapon(w)
 				cleanPendingDamage()
 			end
 		end			
@@ -157,13 +156,19 @@ class SpaceStation
 
 	def mountWeapon(i)
 		if(@hangar != nil)
-			@weapons.push(@hangar.removeWeapon(i))
+			h = @hangar.removeWeapon(i)
+			if(h != nil)
+				@weapons.push(h)
+			end
 		end
 	end
 
 	def mountShieldBooster(i)
 		if(@hangar != nil)
-			@shieldBoosters.push(@hangar.removeShieldBooster(i))
+			sb = @hangar.removeShieldBooster(i)
+			if(sb!= nil)
+				@shieldBoosters.push(sb)
+			end
 		end
 	end
 
@@ -209,29 +214,29 @@ class SpaceStation
 
 	def fire
 
-		size = weapons.size
+		size = @weapons.size
 		factor = 1
 
 		
 		(0...size).each do |i|
-  			w = weapons[i]
+  			w = @weapons[i]
   			factor *= w.useIt
 		end
 
-		return ammoPower * factor
+		return @ammoPower * factor
 	end
 
 	def protection
-		size = shieldBoosters.size
+		size = @shieldBoosters.size
 		factor = 1.0
 
 		i = 0
 		while i < size
-			factor *= shieldBoosters.at(i).useIt
+			factor *= @shieldBoosters.at(i).useIt
 			i+=1
 		end
 
-		return shieldPower * factor
+		return @shieldPower * factor
 
 	end
 	
@@ -276,17 +281,16 @@ class SpaceStation
 	end
 
 	def setPendingDamage(d)
-
 		@pendingDamage = d.adjust(@weapons, @shieldBoosters)
-
 	end
 
 	def validState
 		valid = false
 
-		if(@pendingDamage.hasNoEffect || @pendingDamage == nil)
-			valid = true	
-		
+		if(@pendingDamage == nil)
+			valid = true
+		elsif(@pendingDamage.hasNoEffect)	
+			valid = true
 		end
 
 		return valid

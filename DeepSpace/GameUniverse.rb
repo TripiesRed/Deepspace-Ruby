@@ -25,7 +25,7 @@ class GameUniverse
 		@currentEnemy = nil
 		@currentStation = nil
 		@spaceStations = Array.new
-		@currentStationIndex = 0
+		@currentStationIndex = -1
 
 	end	
 
@@ -33,6 +33,7 @@ class GameUniverse
 
 		if(@gameState.state == GameState::INIT || 
 			@gameState.state == GameState::AFTERCOMBAT)
+			
 			@currentStation.mountShieldBooster(i)
 		end 
 
@@ -41,6 +42,7 @@ class GameUniverse
 	def mountWeapon(i)
 		if(@gameState.state == GameState::INIT || 
 			@gameState.state == GameState::AFTERCOMBAT)
+			puts "HOLA"
 			@currentStation.mountWeapon(i)
 		end 
 
@@ -86,7 +88,7 @@ class GameUniverse
 
 		if(@gameState.state == GameState::INIT || 
 		   @gameState.state == GameState::AFTERCOMBAT)
-			@currentStation.discardWeaponInHangar(i)
+		   @currentStation.discardWeaponInHangar(i)
 		end
 
 	end
@@ -105,14 +107,14 @@ class GameUniverse
 
 	def init(names)
 
-		if( @gameState.state == GameState::CANNOTPLAY)
+		if(@gameState.state == GameState::CANNOTPLAY)
 			dealer = CardDealer.instance
 
 			i = 0 
 			while i < names.size do 
-
 				supplies = dealer.nextSuppliesPackage
 				station = SpaceStation.new(names[i], supplies)
+
 				@spaceStations.push(station)
 
 				nh = @dice.initWithNHangars
@@ -121,6 +123,8 @@ class GameUniverse
 				lo = Loot.new(0,nw,ns,nh,0)
 
 				station.setLoot(lo)
+
+				puts station.to_s
 				i += 1
 
 			end
@@ -138,14 +142,14 @@ class GameUniverse
 
 	def nextTurn
 		
-		if(@gameState.state == GameState::AFTERCOMBAT)
+		if(state == GameState::AFTERCOMBAT)
 
 			if(@currentStation.validState)
 
 				@currentStationIndex = (@currentStationIndex+1) % @spaceStations.size
 				@turns += 1
 
-				@currentStation = @spaceStations[currentStationIndex]
+				@currentStation = @spaceStations[@currentStationIndex]
 				@currentStation.cleanUpMountedItems
 
 				dealer = CardDealer.instance
@@ -172,9 +176,8 @@ class GameUniverse
 	end
 
 	def combat 
-
-		if(@gameState.state == GameState::BEFORECOMBAT || @gameState == GameState::INIT)
-
+		
+		if( state == GameState::BEFORECOMBAT || state == GameState::INIT)
 			return combatGo(@currentStation, @currentEnemy)
 
 		else return CombatResult::NOCOMBAT
@@ -232,6 +235,9 @@ class GameUniverse
 			combatResult = CombatResult::STATIONWINS
 
 		end
+
+		@gameState.next(@turns, @spaceStations.length)
+		return combatResult
 
 	end
 
