@@ -4,5 +4,6 @@ module Deepspace
 		 NOCOMBAT=:nocombat
 		 STATIONESCAPES=:stationescapes
 		 STATIONWINS=:stationwins
+		 STATIONWINSANDESCAPES=:stationwinsandescapes
 	end
 end
