@@ -9,6 +9,10 @@ require_relative 'ShotResult'
 require_relative 'GameCharacter'
 require_relative 'EnemyStarShip'
 require_relative 'SpaceStation'
+require_relative 'BetaPowerEfficientSpaceStation'
+require_relative 'PowerEfficientSpaceStation'
+require_relative 'SpaceCity'
+
 
 module Deepspace
 class GameUniverse
@@ -26,6 +30,7 @@ class GameUniverse
 		@currentStation = nil
 		@spaceStations = Array.new
 		@currentStationIndex = -1
+		@haveSpaceCity = false
 
 	end	
 
@@ -208,7 +213,7 @@ class GameUniverse
 			enemyWins = (result == ShotResult::RESIST)
 		
 		end
-
+		
 		if(enemyWins)
 
 			s = station.getSpeed
@@ -228,16 +233,45 @@ class GameUniverse
 		
 		else
 			aLoot = enemy.loot
-			station.setLoot(aLoot)
+			t = station.setLoot(aLoot)
+			if(t == Transformation::GETEFFICIENT)
+				makeStationEfficient()
+
+			elsif (t == Transformation::SPACECITY)
+				createSpaceCity()
+			
+			end
+
 			combatResult = CombatResult::STATIONWINS
 
 		end
 
 		@gameState.next(@turns, @spaceStations.length)
+		#nextTurn()
 		return combatResult
 
 	end
 
+	def createSpaceCity
+		if(!@haveSpaceCity)
+			@currentStation = SpaceCity.new(@currentStation, @spaceStations)
+			@spaceStations[@currentStationIndex] = @currentStation
+			@haveSpaceCity = true
+		end
+	end
+
+	def makeStationEfficient
+		extraeff = @dice.extraEfficiency
+
+		if(extraeff)
+			@currentStation = BetaPowerEfficientSpaceStation.newCopy(@currentStation)
+			@spaceStations[@currentStationIndex] = @currentStation
+
+		else
+			@currentStation = PowerEfficientSpaceStation.newCopy(@currentStation)
+			@spaceStations[@currentStationIndex] = @currentStation
+		end
+	end
 
 	def getUIversion
 		

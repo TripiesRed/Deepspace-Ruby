@@ -1,4 +1,5 @@
 require_relative 'Damage'
+require_relative 'NumericDamageToUI'
 
 module Deepspace
 class NumericDamage < Damage
@@ -6,12 +7,7 @@ class NumericDamage < Damage
     # Volvemos a poner público el constructor de Damage
     public_class_method :new
 
-    def initialize(weapons, shields)
-        super(weapons, shields)
-    end
-
-    def discardWeapon
-		
+    def discardWeapon(w)
 		if @nWeapons > 0
 		  @nWeapons -= 1
 		end
@@ -38,10 +34,9 @@ class NumericDamage < Damage
 		return NumericDamage.new(new_n_weapons, new_n_shields)
 	end
 
+	def getUIversion
+		return NumericDamageToUI.new(self)
+	end
+
 end # Class
 end # Module
-
-d = Deepspace::NumericDamage.new(5,6)
-puts d.nWeapons
-d.discardWeapon
-puts d.nWeapons

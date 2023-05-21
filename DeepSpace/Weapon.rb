@@ -39,15 +39,11 @@ module Deepspace
 		end
 		
 		def getUIversion
-	
 			return WeaponToUI.new(self)
-	
 		end
 
 		def to_s
-
-			"Name: " + @name + "\nType: " + @type.to_s + "\nUses: " + @uses.to_s
-
+			return getUIversion.to_s
 		end
 		 
 	end

@@ -10,12 +10,12 @@ module Deepspace
 			@nShields = shields
 			@nHangars = hangars
 			@nMedals = medals
-			@getEfficient = ef
+			@efficient = ef
 			@spaceCity = city
 			
 		end
 
-		attr_reader :nSupplies, :nWeapons, :nShields, :nHangars, :nMedals, :getEfficient,
+		attr_reader :nSupplies, :nWeapons, :nShields, :nHangars, :nMedals, :efficient,
 					:spaceCity
 		
 		def getUIversion

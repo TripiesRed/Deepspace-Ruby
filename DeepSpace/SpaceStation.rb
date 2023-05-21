@@ -7,6 +7,7 @@ require_relative 'ShieldBooster'
 require_relative 'Hangar'
 require_relative 'CardDealer'
 require_relative 'ShotResult'
+require_relative 'Transformation'
 
 module Deepspace
 
@@ -40,7 +41,7 @@ class SpaceStation
 		aux.weapons = Array.new(other.weapons)
 
 		if other.pendingDamage != nil
-			aux.pendingDamage = Damage.newCopy(other.pendingDamage)
+			aux.pendingDamage = Damage.copy(other.pendingDamage)
 		end
 
 		if other.hangar != nil
@@ -83,7 +84,7 @@ class SpaceStation
     		@shieldPower = 0.0
 
     	return ShotResult::DONOTRESIST
-  end
+  		end
 	end
 
 	def receiveSupplies(s)
@@ -215,12 +216,10 @@ class SpaceStation
 	def fire
 
 		size = @weapons.size
-		factor = 1
+		factor = 1.0
 
-		
 		(0...size).each do |i|
-  			w = @weapons[i]
-  			factor *= w.useIt
+  			factor *= @weapons[i].useIt
 		end
 
 		return @ammoPower * factor
@@ -278,6 +277,17 @@ class SpaceStation
   		end
 
   		@nMedals += loot.nMedals
+
+		if(loot.efficient)
+			return Transformation::GETEFFICIENT
+
+		elsif(loot.spaceCity)
+			return Transformation::SPACECITY
+
+		else
+			return Transformation::NOTRANSFORM
+		end
+
 	end
 
 	def setPendingDamage(d)
@@ -302,29 +312,7 @@ class SpaceStation
 	end
 
 	def to_s
-
-		line = "Name: " + @name +  "\nMedals: " + @nMedals.to_s + "\nFuelUnits: " + @fuelUnits.to_s
-		line = line + "\nAmmoPower: " + @ammoPower.to_s + "\nShieldPower: " + @shieldPower.to_s + "\n-Hangar\n" + @hangar.to_s
-
-		i = 0
-		line2 = "\n-ShieldBoosters"
-		while  i < @shieldBoosters.size do
-			line2 += "\n-Shield " + i.to_s + "-\n" + @shieldBoosters[i].to_s
-			i += 1
-		end
-
-		line2 += "\n-Weapons"
-
-		i = 0
-		while  i < @weapons.size do
-			line2 += "\n-Weapon " + i.to_s + "-\n" + @weapons[i].to_s
-			i += 1
-		end
-
-		line += line2
-
-		line
-
+		getUIversion.to_s
 	end	
 
 	#Métodos Privados
@@ -339,11 +327,9 @@ class SpaceStation
 	end
 
 	def cleanPendingDamage
-
 		if(@pendingDamage.hasNoEffect)
 			@pendingDamage = nil
 		end
-
 	end
 
 end

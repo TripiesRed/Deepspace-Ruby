@@ -15,10 +15,6 @@ module Deepspace
 		@weapons = []
 	  end
 	  
-	  def getUIversion
-		DamageToUI.new(self)
-	  end
-	  
 	  # Métodods Públicos
 	  def copy(orig)
 		aux = new(orig.nWeapons, orig.nShields)
@@ -50,7 +46,6 @@ module Deepspace
 		end
 		return index
 	  end
-
 
 	  # Dado que es una clase abstracta, hacemos privado el constructor
 	  private_class_method :new

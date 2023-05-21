@@ -132,7 +132,7 @@ class TextMainView
   
   def readNamePlayers() 
     names = Array.new
-    nPlayers = readInt("\n¿Cuántos jugadores participan (2-4)? ",2,4)
+    nPlayers = readInt("\n¿Cuántos jugadores participan (1-4)? ",1,4)
     for i in 0...nPlayers
       print "Escribe el nombre del jugador #{i+1}: "
       names.push(gets.chomp)
