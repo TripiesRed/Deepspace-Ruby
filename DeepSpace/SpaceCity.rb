@@ -56,6 +56,10 @@ class SpaceCity < SpaceStation
         return SpaceCityToUI.new(self)
     end
 
+    def to_s
+		return getUIversion.to_s
+	end
+
     attr_reader :collaborators
 
 end # class

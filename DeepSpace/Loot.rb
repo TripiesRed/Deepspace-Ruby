@@ -19,9 +19,11 @@ module Deepspace
 					:spaceCity
 		
 		def getUIversion
-		
 			return LootToUI.new(self)
-		
+		end
+
+		def to_s
+			return getUIversion.to_s
 		end
 
 	end # class

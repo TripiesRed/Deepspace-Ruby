@@ -39,12 +39,13 @@ module Deepspace
 		end
 		
 		def getUIversion
-		
 			return ShieldToUI.new(self)
-		
+		end
+
+		def to_s
+			return getUIversion.to_s
 		end
 
 	end
-	
 end
 

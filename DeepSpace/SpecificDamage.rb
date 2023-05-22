@@ -58,6 +58,22 @@ class SpecificDamage < Damage
 		return SpecificDamageToUI.new(self)
 	end
 
+	def to_s
+		return getUIversion.to_s
+	end
+
+	#Métodos privados
+	private
+
+	def arrayContainsType(w, t)
+		index = -1
+		if w.include?(t)
+			index = w.index(t)
+		end
+		
+		return index
+	end
+
 end # Class
 
 end # Module

@@ -65,28 +65,7 @@ module Deepspace
 		end
 
 		def to_s
-
-			line1 = "MaxElements: " + @maxElements.to_s
-
-			i = 0
-			line2 = "\n-ShieldBoosters(in Hangar) "
-			while  i < @shieldBoosters.size do
-				line2 += "\n-Shield " + i.to_s + "-\n" + @shieldBoosters[i].to_s
-				i += 1
-			end
-
-			line2 += "\n-Weapons(in Hangar) "
-
-			i = 0
-			while  i < @weapons.size do
-				line2 += "\n-Weapon " + i.to_s + "-\n" + @weapons[i].to_s
-				i += 1
-			end
-
-			line1 += line2
-
-			line1
-
+			return getUIversion.to_s
 		end
 
 		# Métodos Privados

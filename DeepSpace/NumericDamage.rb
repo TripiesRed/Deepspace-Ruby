@@ -38,5 +38,9 @@ class NumericDamage < Damage
 		return NumericDamageToUI.new(self)
 	end
 
+	def to_s
+		return getUIversion.to_s
+	end
+
 end # Class
 end # Module

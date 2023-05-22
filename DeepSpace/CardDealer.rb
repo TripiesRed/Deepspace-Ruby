@@ -153,7 +153,7 @@ class CardDealer
         softSpecificDamage1=SpecificDamage.new([WeaponType::MISSILE],1)  
         softSpecificDamage2=SpecificDamage.new([WeaponType::PLASMA],1)  
         mediumSpecificDamage0=SpecificDamage.new([WeaponType::LASER,WeaponType::MISSILE],2)  
-        /
+        
         @enemies.add(EnemyStarShip.new("Enemigo fácil -1",0,0,regularLoot0,lowDamage0)); 
         @enemies.add(EnemyStarShip.new("Enemigo fácil -1",0,10,badLoot,lowDamage0));
         @enemies.add(EnemyStarShip.new("Enemigo fácil -1",10,0,badLoot,lowDamage0));
@@ -185,13 +185,13 @@ class CardDealer
         
         
         # Enemigos que transforman
-        /
+        
         transformLoot0=Loot.new(1,1,1,0,1,true,false)
         
         transformLoot1=Loot.new(1,1,1,0,1,false,true)
         
         @enemies.add(EnemyStarShip.new("Enemigo transforma 0",1,1,transformLoot1,regularDamage0))
-        #@enemies.add(EnemyStarShip.new("Enemigo transforma 1",100,200,transformLoot1,regularDamage1)) 
+        @enemies.add(EnemyStarShip.new("Enemigo transforma 1",100,200,transformLoot1,regularDamage1)) 
     end
 end # class
 

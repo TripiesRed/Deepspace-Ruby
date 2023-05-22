@@ -274,9 +274,11 @@ class GameUniverse
 	end
 
 	def getUIversion
-		
 		return GameUniverseToUI.new(@currentStation, @currentEnemy)
-	
+	end
+
+	def to_s
+		return getUIversion.to_s
 	end
 
 end

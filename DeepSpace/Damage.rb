@@ -37,16 +37,6 @@ module Deepspace
 	  end
 
 	  # Métodos Privados
-	  private
-
-	  def arrayContainsType(w, t)
-		index = -1
-		if w.include?(t)
-		  index = w.index(t)
-		end
-		return index
-	  end
-
 	  # Dado que es una clase abstracta, hacemos privado el constructor
 	  private_class_method :new
 
