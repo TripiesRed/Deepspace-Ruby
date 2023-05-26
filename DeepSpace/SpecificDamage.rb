@@ -14,7 +14,7 @@ class SpecificDamage < Damage
 
     def discardWeapon(w)
 
-		weapon_index = arrayContainsType(@weapons, w)
+		weapon_index = arrayContainsType(@weapons, w.type)
 
 		if !@weapons.empty? && weapon_index != -1
 		  @weapons.delete_at(weapon_index)
@@ -36,9 +36,9 @@ class SpecificDamage < Damage
 			new_n_weapons = @nWeapons
 			i = 0
 			while i < w.length do
-				n = arrayContainsType(@weapons, w[i])
+				n = arrayContainsType(@weapons, w[i].type)
 				if(n != -1)
-					new_wl.add(@weapons[n])
+					new_wl.push(@weapons[n])
 				end
 				i +=1
 			end

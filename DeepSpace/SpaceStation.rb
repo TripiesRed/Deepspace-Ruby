@@ -291,7 +291,13 @@ class SpaceStation
 	end
 
 	def setPendingDamage(d)
-		@pendingDamage = d.adjust(@weapons, @shieldBoosters)
+		wt = Array.new
+
+		for i in @weapons
+			wt << i.type
+		end
+
+		@pendingDamage = d.adjust(wt, @shieldBoosters)
 	end
 
 	def validState

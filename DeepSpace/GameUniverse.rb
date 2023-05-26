@@ -19,7 +19,7 @@ class GameUniverse
 
 	@@WIN = 10
 
-	attr_reader :gtate, :currentStation, :currentEnemy
+	attr_reader :gameState, :currentStation, :currentEnemy
 
 	def initialize ()
 		

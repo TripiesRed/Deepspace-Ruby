@@ -153,7 +153,7 @@ class CardDealer
         softSpecificDamage1=SpecificDamage.new([WeaponType::MISSILE],1)  
         softSpecificDamage2=SpecificDamage.new([WeaponType::PLASMA],1)  
         mediumSpecificDamage0=SpecificDamage.new([WeaponType::LASER,WeaponType::MISSILE],2)  
-        
+        /
         @enemies.add(EnemyStarShip.new("Enemigo fácil -1",0,0,regularLoot0,lowDamage0)); 
         @enemies.add(EnemyStarShip.new("Enemigo fácil -1",0,10,badLoot,lowDamage0));
         @enemies.add(EnemyStarShip.new("Enemigo fácil -1",10,0,badLoot,lowDamage0));
@@ -165,13 +165,13 @@ class CardDealer
         @enemies.add(EnemyStarShip.new("Enemigo fácil 1",10,20,badLoot,lowDamage1));
         @enemies.add(EnemyStarShip.new("Enemigo fácil 2",20,10,badLoot,lowDamage2));
         @enemies.add(EnemyStarShip.new("Enemigo fácil 2",20,10,badLoot,lowDamage2));
-        @enemies.add(EnemyStarShip.new("Enemigo fácil 2",20,20,badLoot,lowDamage2));        
+        @enemies.add(EnemyStarShip.new("Enemigo fácil 2",20,20,badLoot,lowDamage2));  /      
         @enemies.add(EnemyStarShip.new("Enemigo fácil 3",50,50,badLoot,softSpecificDamage0)); 
         @enemies.add(EnemyStarShip.new("Enemigo fácil 4",50,50,badLoot,softSpecificDamage1)); 
         @enemies.add(EnemyStarShip.new("Enemigo fácil 5",30,30,badLoot,softSpecificDamage2));         
-        
+        /
         @enemies.add(EnemyStarShip.new("Enemigo normal 0",100,100,regularLoot0,regularDamage0));
-        @enemies.add(EnemyStarShip.new("Enemigo normal 1",150,70,regularLoot1,regularDamage1));   
+        @enemies.add(EnemyStarShip.new("Enemigo normal 1",150,70,regularLoot1,regularDamage1));   /
         @enemies.add(EnemyStarShip.new("Enemigo normal 2",100,100,regularLoot0,mediumSpecificDamage0));
         @enemies.add(EnemyStarShip.new("Enemigo normal 3",150,90,regularLoot1,mediumSpecificDamage0));  
         @enemies.add(EnemyStarShip.new("Enemigo normal 3",150,70,regularLoot0,regularSpecificDamage0));   
