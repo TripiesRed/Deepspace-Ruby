@@ -38,9 +38,8 @@ class SpecificDamage < Damage
 			new_n_weapons = @nWeapons
 			i = 0
 			while i < w.length do
-				n = arrayContainsType(@weapons, w[i].type)
-				if(n != -1)
-					new_wl.push(@weapons[n].type)
+				if(@weapons.include?(w[i].type))
+					new_wl.push(w[i].type)
 				end
 				i +=1
 			end
