@@ -69,14 +69,10 @@ class SpecificDamage < Damage
 	def arrayContainsType(w, t)
 		index = -1
 
-		wt = Array.new
-
 		for i in w
-			wt << i.type
-		end
-
-		if wt.include?(t)
-			index = wt.index(t)
+			if(i.type = t)
+				index = w.index(i)
+			end
 		end
 		
 		return index
