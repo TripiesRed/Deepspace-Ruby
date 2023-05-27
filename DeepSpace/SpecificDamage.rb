@@ -14,10 +14,8 @@ class SpecificDamage < Damage
 
     def discardWeapon(w)
 
-		weapon_index = arrayContainsType(@weapons, w.type)
-
-		if !@weapons.empty? && weapon_index != -1
-		  @weapons.delete_at(weapon_index)
+		if !@weapons.empty? && @weapons.include?(w.type)
+		  @weapons.delete_at(@weapons.index(w.type))
           @nWeapons -= 1
 		end
 
@@ -30,7 +28,11 @@ class SpecificDamage < Damage
 		# Ajustamos nWeapons
 		if @nWeapons > w.length
 			new_n_weapons = w.length
-			new_wl = Array.new(w)
+			new_wl = Array.new
+
+			for i in w
+				new_wl << i.type
+			end
 
 		else
 			new_n_weapons = @nWeapons
@@ -38,7 +40,7 @@ class SpecificDamage < Damage
 			while i < w.length do
 				n = arrayContainsType(@weapons, w[i].type)
 				if(n != -1)
-					new_wl.push(@weapons[n])
+					new_wl.push(@weapons[n].type)
 				end
 				i +=1
 			end
@@ -67,8 +69,15 @@ class SpecificDamage < Damage
 
 	def arrayContainsType(w, t)
 		index = -1
-		if w.include?(t)
-			index = w.index(t)
+
+		wt = Array.new
+
+		for i in w
+			wt << i.type
+		end
+
+		if wt.include?(t)
+			index = wt.index(t)
 		end
 		
 		return index
